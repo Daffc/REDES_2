@@ -12,6 +12,10 @@ Data da última Modificação: 22/07/2021
 
 import socket
 import argparse
+from random import randint
+
+# TAMANHO MÁXIMO DE MENSAGEM.
+MAX_DATA=1024
 
 # Recuperando argumentos de entrada 
 def parsingArguments():
@@ -27,9 +31,29 @@ def parsingArguments():
 if __name__ == "__main__":
     SERVER, PORT = parsingArguments()
 
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((SERVER, PORT))
-        s.sendall(b'Hello, world')
-        data = s.recv(1024)
+    # ABRINDO VÁRIAS CONEXÕES E FEICHANDO SOMENTE APÓS COMUNICAÇÃO (DEBUG)
+    s = []
+    for i in range(5):
+        s.append(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
+        s[i].connect((SERVER, PORT))
 
-    print('Received', repr(data))
+        mensagem = f"REQUEST CONEXAO '{i}'."
+
+        s[i].sendall(b'Hello, world')
+        data = s[i].recv(MAX_DATA)
+        print('Received', repr(data))
+
+    # ENVIANDO 10 MENSÁGENS POR CONEXÕES RANDÔMICAS.
+    for i in range(10):
+
+        rand = randint(0, 4)
+        print(rand)
+
+        mensagem = f"MENSAGEM RANDOMICA: '{i}', CONEXAO: '{rand}'."
+        s[rand].sendall(str.encode(mensagem))
+        data = s[rand].recv(MAX_DATA)
+        print('Received', repr(data))
+
+    # FECHANDO CONEXÕES.
+    for i in range(5):
+        s[i].close()
