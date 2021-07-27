@@ -61,8 +61,10 @@ def tratandoRecebimento(data, recv_data):
         # Operações com menságem.
         print('mensagem', mensagem)
 
+        resposta = str.encode(f'RESPONDENDO {data.addr} COM ({mensagem}) ')
+
         # Define Resposta.
-        data.outb += cript.criptografar(data.chaveDES, b"The book is on the table")
+        data.outb += cript.criptografar(data.chaveDES, resposta)
 
 
 # Tratando de receber dados para conexões previamente iniciadas.
