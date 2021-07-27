@@ -119,8 +119,8 @@ if __name__ == "__main__":
         data = conn.socket.recv(MAX_DATA)
         real_data = cript.decriptografar(conn.desKey, data) 
         print(f"CONEXÃO: {conn.id}\t Mensagem: {i}")
-        print('\t', 'Mensagem Cripto: ', repr(data))
-        print('\t', 'Mensagem Decripto: ', repr(real_data))
+        print('\tMensagem Cripto: ', repr(data))
+        print('\tMensagem Decripto: ', repr(real_data))
 
 
     print("==========================================================================")
