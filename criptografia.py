@@ -14,9 +14,8 @@ import sympy
 
 TAMANHO_CHAVE = 8   # Tamanho de chaves Utilizado.
 MAX_RAND_INT = 1024
-MIN_PRIME = 2
+MIN_PRIME = 1
 MAX_PRIME = 256
-
 
 # Gera chave DES a partir de inteiro 'chave'
 def geraChave(chave):
@@ -35,5 +34,13 @@ def geraInteiroRandomico():
     return randint(1, MAX_RAND_INT)
 
 # Gerando Número Primo Randômico
-def geraPrimoRandômico():
-    return sympy.randprime(MIN_PRIME, MAX_PRIME)
+def geraPrimoRandômico(antigo_primo):
+
+    # Gera novo número primo
+    novo_primo = sympy.randprime(MIN_PRIME, MAX_PRIME)
+
+    # Enquanto novo novo_primo == antigo_primo, gerar outro número primo.
+    while (novo_primo == antigo_primo):
+        novo_primo = sympy.randprime(MIN_PRIME, MAX_PRIME)
+
+    return novo_primo
