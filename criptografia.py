@@ -18,7 +18,7 @@ MIN_PRIME = 1
 MAX_PRIME = 256
 
 # Gera chave DES a partir de inteiro 'chave'
-def geraChave(chave):
+def geraChaveDES(chave):
     return DesKey(chave.to_bytes(TAMANHO_CHAVE, byteorder='big'))
 
 # Criptografa mensagem em bytes 'byte_decriptado' utilizando chave DES 'chaveDES'. 

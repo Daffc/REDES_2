@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.9
 '''
 Programa: Servidor Concorrente TCP/IP usando socket 'SOCK_STREAM' aplicando metodo de cirptografia para troca de chaves Diffie-Hellman.
 
@@ -48,7 +48,7 @@ def tratandoRecebimento(data, recv_data):
             data.chaveDH = (chavePublicaCliente ** chavePrivadaServidor) % data.basePrime
 
             # Gerando Chave DES.
-            data.chaveDES = cript.geraChave(data.chaveDH)
+            data.chaveDES = cript.geraChaveDES(data.chaveDH)
 
             # Calculando e retornando Chave Pública de servidor e retornando para cliente.
             chavePublicaServidor = (data.modulusPrime ** chavePrivadaServidor) % data.basePrime
