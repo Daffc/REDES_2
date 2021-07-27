@@ -13,11 +13,60 @@ import types
 import argparse
 import socket
 
+import criptografia as cript
+
+# TAMANHO MÁXIMO DE MENSAGEM.
 MAX_DATA=1024
+staticModulusPrime = 5
+# staticChavePrivadaServidor = 15
+
+
+def tratandoRecebimento(data, recv_data):
+    # Caso chave de criptografia não tenha sido definida.
+    if(not data.chaveDH):
+        # Caso não tenha sido definido o 'basePrime' (enviado pelo cliente), menságem atual deverá conte-lo.
+        if(not data.basePrime):
+            # Vinculando 'basePrime' a estrutura de dados 'dados' de conexão.
+            data.basePrime = int.from_bytes(recv_data , "big")
+
+            # Definindo 'modulusPrime' e enviando para Cliente desta conexão.
+            # data.modulusPrime = staticModulusPrime # Caso tenha que gerar randômico, colocar aqui.
+
+            data.modulusPrime = cript.geraPrimoRandômico()
+            data.outb = bytes([data.modulusPrime])
+
+        # Caso bases já estejam definidas, menságem conterá chave pública.
+        else:
+
+            # Recebendo Chave pública de cliente.
+            chavePublicaCliente = int.from_bytes(recv_data , "big")
+
+            # DefinincoCave Publica servidor.
+            chavePrivadaServidor = cript.geraInteiroRandomico() #Caso tenha que gerar randômico, colocar aqui.
+            
+            # Calculando chave privada e armazenando chave de criptografia.
+            data.chaveDH = (chavePublicaCliente ** chavePrivadaServidor) % data.basePrime
+
+            # Gerando Chave DES.
+            data.chaveDES = cript.geraChave(data.chaveDH)
+
+            # Calculando e retornando Chave Pública de servidor e retornando para cliente.
+            chavePublicaServidor = (data.modulusPrime ** chavePrivadaServidor) % data.basePrime
+            data.outb = bytes([chavePublicaServidor])
+    else:
+        
+        # Decriptografando Mensagem
+        mensagem = cript.decriptografar(data.chaveDES, recv_data)
+        
+        # Operações com menságem.
+        print('mensagem', mensagem)
+
+        # Define Resposta.
+        data.outb += cript.criptografar(data.chaveDES, b"The book is on the table")
 
 
 # Tratando de receber dados para conexões previamente iniciadas.
-def service_connection(key, mask):
+def atenderConexao(key, mask):
 
     # Recuperando objeto de arquivo e dados de conexão.
     sock = key.fileobj
@@ -28,25 +77,28 @@ def service_connection(key, mask):
         # Lê dados de comunicação.
         recv_data = sock.recv(MAX_DATA)
 
-        # Caso existam dados, armazená-los em 'data.outb'.
+        # Caso existam dados, tratar de comunicação.
         if recv_data:
-            data.outb += recv_data
+            tratandoRecebimento(data, recv_data)
 
-        # Caso existam dados, armazená-los em 'data.outb'.
+        # Caso não existam dados, fechar conexão.
         else:
-            print('Terminando conexão com {data.addr}')
+            print(f'Terminando conexão com {data.addr}')
             sel.unregister(sock)    # Removendo objeto de arquivo de multiplexador.
             sock.close()            # Fechando socket.
 
-    # Caso socket esteja pronto para ser escrito.
+    # Caso menságem esteja pronta para ser enviada.
     if mask & selectors.EVENT_WRITE:
         if data.outb:
             print('Enviando: ', repr(data.outb), 'para', data.addr)
-            sent = sock.send(data.outb)  # Should be ready to write
+
+            # Envia menságem e ajusta ponteiro de buffer.
+            sent = sock.send(data.outb)
             data.outb = data.outb[sent:]
+        
+            print("data.basePrime", data.basePrime, "data.modulusPrime", data.modulusPrime, "data.chaveDH", data.chaveDH)
 
-
-def accept_wrapper(sock):
+def defineNovaConexao(sock):
     
     # Definindo socket para nova conexão.
     conn, endereco = sock.accept()
@@ -55,14 +107,17 @@ def accept_wrapper(sock):
     # Colocando socket de nova conexão em modo não-bloqueante.
     conn.setblocking(False)
 
+    #Gerador de Primo
+
     # Definindo objeto para manipulação de conexão criada.
     data = types.SimpleNamespace(
-                                addr=endereco,  # Endereço de cliente.
-                                inb=b'',        # Dados recebidos.
-                                outb=b'',       # Dados enviados.
-                                sprime=2,       # Número primo de cifragem do servidor.
-                                cprime=None,    # Número Primo se cigragem do cliente. 
-                                ckey=None)      # Chave privada.
+                                addr=endereco,      # Endereço de cliente.
+                                inb=b'',            # Dados recebidos.
+                                outb=b'',           # Dados enviados.
+                                modulusPrime=None,  # Número primo de cifragem do servidor.
+                                basePrime=None,     # Número Primo se cigragem do cliente. 
+                                chaveDH=None,       # Chave privada DH.
+                                chaveDES=None)      # Chave de para criptografar/decriptografar DES.
     
     # Definindo eventos para nova conesão (Leitura e Escrita).
     events = selectors.EVENT_READ | selectors.EVENT_WRITE
@@ -118,8 +173,8 @@ if __name__ == "__main__":
             # Caso dados estejam vazios, objetos de arquivo selecionado é o de 'listening_sock', 
             # ou seja, nova solicitação para abertura de conexão. 
             if key.data is None:
-                accept_wrapper(key.fileobj)
+                defineNovaConexao(key.fileobj)
 
             # Caso contrário, objetos de arquivo selecionado é o de conexão já existente.
             else:
-                service_connection(key, mask)
+                atenderConexao(key, mask)
