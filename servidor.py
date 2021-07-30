@@ -29,8 +29,6 @@ def tratandoRecebimento(data, recv_data):
             data.basePrime = int.from_bytes(recv_data , "big")
 
             # Definindo 'modulusPrime' e enviando para Cliente desta conexão.
-            # data.modulusPrime = staticModulusPrime # Caso tenha que gerar randômico, colocar aqui.
-
             data.modulusPrime = cript.geraPrimoRandomico(data.basePrime)
             data.outb = bytes([data.modulusPrime])
 
