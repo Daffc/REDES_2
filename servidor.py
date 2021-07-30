@@ -17,7 +17,6 @@ import criptografia as cript
 
 # TAMANHO MÁXIMO DE MENSAGEM.
 MAX_DATA=1024
-staticModulusPrime = 5
 # staticChavePrivadaServidor = 15
 
 
@@ -143,6 +142,10 @@ if __name__ == "__main__":
     # Recuperando HOST e servidor para socket.    
     HOST, PORT = parsingArguments()
     
+    print("==========================================================================")
+    print(f" Inicializando Servidor em interface \'{HOST}\' em porta \'{PORT}\'  ")    
+    print("==========================================================================")
+
     # Definindo seletor de objetos de arquivo (abstração para file descriptor de sockets). 
     sel = selectors.DefaultSelector()
 
@@ -155,10 +158,10 @@ if __name__ == "__main__":
     # Inicializando socket de escuta.
     listening_sock.listen()
 
-    print(f'Escutando interface \'{HOST}\' em porta \'{PORT}\'...')
-
+    print('Definindo Socket de Escuta... ', end='')
     # Colocando socket de escuta em modo não-bloqueante.
     listening_sock.setblocking(False)
+    print('OK')
 
     # Registrando socket de escuta em multiplexador de objetos de arquivo. 
     sel.register(listening_sock, selectors.EVENT_READ, data=None)
