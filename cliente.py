@@ -105,7 +105,7 @@ if __name__ == "__main__":
     # ENVIANDO 10 MENSÁGENS POR CONEXÕES RANDÔMICAS.
     for i in range(10):
 
-        mensagem = f"MENSAGEM '{i}', CONEXAO: '{conn.id}'."
+        mensagem = f"MENSAGEM '{i}', ID: '{conn.id}'."
         mensagem_cript = cript.criptografar(conn.desKey, str.encode(mensagem))
         conn.socket.sendall(mensagem_cript)
         print(f'Enviando Menságem {i}')
