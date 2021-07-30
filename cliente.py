@@ -53,6 +53,7 @@ if __name__ == "__main__":
     print("                             Iniciando Conexões                           ")    
     print("==========================================================================")
 
+    # Inicializando objeto de conexão.
     conn = Connection(  randint(0, 1000), 
                         socket.socket(socket.AF_INET, socket.SOCK_STREAM), 
                         None,
@@ -61,6 +62,7 @@ if __name__ == "__main__":
                         None,
                         None)
 
+    # Solicitando iniciação de conexão com servidor SERVER em porta PORT.
     conn.socket.connect((SERVER, PORT))
     print(conn)
     
@@ -106,11 +108,13 @@ if __name__ == "__main__":
         mensagem = f"MENSAGEM '{i}', CONEXAO: '{conn.id}'."
         mensagem_cript = cript.criptografar(conn.desKey, str.encode(mensagem))
         conn.socket.sendall(mensagem_cript)
-
+        print(f'Enviando Menságem {i}')
+        print('\tMensagem Cripto: ', repr(mensagem_cript))
+        print('\tMensagem Decripto: ', repr(str.encode(mensagem)))
 
         data = conn.socket.recv(MAX_DATA)
         real_data = cript.decriptografar(conn.desKey, data) 
-        print(f"CONEXÃO: {conn.id}\t Mensagem: {i}")
+        print(f'Recebendo Menságem {i}')
         print('\tMensagem Cripto: ', repr(data))
         print('\tMensagem Decripto: ', repr(real_data))
 
