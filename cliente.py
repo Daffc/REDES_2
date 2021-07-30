@@ -70,7 +70,7 @@ if __name__ == "__main__":
     print("                        Trocando Números Primos                           ")    
     print("==========================================================================")
 
-    conn.basePrime = cript.geraPrimoRandômico(None)
+    conn.basePrime = cript.geraPrimoRandomico(None)
     conn.socket.sendall(bytes([conn.basePrime]))
 
     data = conn.socket.recv(MAX_DATA)

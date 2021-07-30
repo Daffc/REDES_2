@@ -31,7 +31,7 @@ def tratandoRecebimento(data, recv_data):
             # Definindo 'modulusPrime' e enviando para Cliente desta conexão.
             # data.modulusPrime = staticModulusPrime # Caso tenha que gerar randômico, colocar aqui.
 
-            data.modulusPrime = cript.geraPrimoRandômico(data.basePrime)
+            data.modulusPrime = cript.geraPrimoRandomico(data.basePrime)
             data.outb = bytes([data.modulusPrime])
 
         # Caso bases já estejam definidas, menságem conterá chave pública.

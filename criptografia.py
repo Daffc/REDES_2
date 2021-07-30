@@ -34,7 +34,7 @@ def geraInteiroRandomico():
     return randint(1, MAX_RAND_INT)
 
 # Gerando Número Primo Randômico
-def geraPrimoRandômico(antigo_primo):
+def geraPrimoRandomico(antigo_primo):
 
     # Gera novo número primo
     novo_primo = sympy.randprime(MIN_PRIME, MAX_PRIME)
