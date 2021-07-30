@@ -31,10 +31,10 @@ class Connection:
     socket: socket.socket
     basePrime: int
     modulusPrime: int
-    privateKey: int
+    publicKey: int
     privateKey: int
     sharedSecretKey: int
-    desKey: DesKey
+    desKey: DesKey = None
 
 # Recuperando argumentos de entrada 
 def parsingArguments():
@@ -52,7 +52,6 @@ if __name__ == "__main__":
     print("==========================================================================")
     print("                             Iniciando Conexões                           ")    
     print("==========================================================================")
-    sleep(randint(500, 1000) / 1000)
 
     conn = Connection(  randint(0, 1000), 
                         socket.socket(socket.AF_INET, socket.SOCK_STREAM), 
@@ -68,7 +67,6 @@ if __name__ == "__main__":
     print("==========================================================================")
     print("                        Trocando Números Primos                           ")    
     print("==========================================================================")
-    sleep(randint(500, 1000) / 1000)
 
     conn.basePrime = cript.geraPrimoRandômico(None)
     conn.socket.sendall(bytes([conn.basePrime]))
@@ -81,7 +79,6 @@ if __name__ == "__main__":
     print("==========================================================================")
     print("           Definindo Chaves Publicas, Privadas e Diffie–Hellman           ")    
     print("==========================================================================")
-    sleep(randint(500, 1000) / 1000)
     conn.privateKey = cript.geraInteiroRandomico()
     conn.publicKey = (conn.modulusPrime ** conn.privateKey) % conn.basePrime
 
@@ -105,7 +102,6 @@ if __name__ == "__main__":
 
     # ENVIANDO 10 MENSÁGENS POR CONEXÕES RANDÔMICAS.
     for i in range(10):
-        sleep(randint(500, 1000) / 1000)
 
         mensagem = f"MENSAGEM '{i}', CONEXAO: '{conn.id}'."
         mensagem_cript = cript.criptografar(conn.desKey, str.encode(mensagem))
@@ -120,7 +116,7 @@ if __name__ == "__main__":
 
 
     print("==========================================================================")
-    print("                          Fechando Conexões                               ")
+    print("                           Fechando Conexão                               ")
     print("==========================================================================")
     conn.socket.close()
 
