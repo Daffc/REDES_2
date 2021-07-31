@@ -59,7 +59,7 @@ def tratandoRecebimento(data, recv_data):
             data.sharedSecretKey = (publicClientKey ** data.privateKey) % data.basePrime
 
             # Gerando Chave DES.
-            data.chaveDES = cript.geraChaveDES(data.sharedSecretKey)
+            data.desKey = cript.geradesKey(data.sharedSecretKey)
 
             # Calculando e retornando Chave Pública de servidor e retornando para cliente.
             data.publicKey = (data.modulusPrime ** data.privateKey) % data.basePrime
@@ -67,15 +67,15 @@ def tratandoRecebimento(data, recv_data):
     else:
         
         # Decriptografando Mensagem
-        mensagem = cript.decriptografar(data.chaveDES, recv_data)
+        mensagem = cript.decriptografar(data.desKey, recv_data)
         
         # Operações com menságem.
         print('mensagem', mensagem)
 
-        resposta = str.encode(f'RESPONDENDO {data.addr} COM ({mensagem}) ')
+        resposta = str.encode(f'RESPONDENDO {data.addr} COM ({mensagem})')
 
         # Define Resposta.
-        data.outb += cript.criptografar(data.chaveDES, resposta)
+        data.outb += cript.criptografar(data.desKey, resposta)
 
 
 # Tratando de receber dados para conexões previamente iniciadas.
