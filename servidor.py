@@ -41,6 +41,9 @@ def tratandoRecebimento(data, recv_data):
         if(not data.basePrime):
             # Vinculando 'basePrime' a estrutura de dados 'dados' de conexão.
             data.basePrime = int.from_bytes(recv_data , "big")
+            print("==========================================================================")
+            print("                        Trocando Números Primos                           ")    
+            print("==========================================================================")
             
             # Definindo 'modulusPrime' e enviando para Cliente desta conexão.
             data.modulusPrime = cript.geraPrimoRandomico(data.basePrime)
@@ -58,8 +61,13 @@ def tratandoRecebimento(data, recv_data):
             # Calculando chave privada e armazenando chave de criptografia.
             data.sharedSecretKey = (publicClientKey ** data.privateKey) % data.basePrime
 
+            print("==========================================================================")
+            print("                           Definindo Chaves DES                           ")
+            print("==========================================================================")
+
             # Gerando Chave DES.
             data.chaveDES = cript.geraChaveDES(data.sharedSecretKey)
+            print(data)
 
             # Calculando e retornando Chave Pública de servidor e retornando para cliente.
             data.publicKey = (data.modulusPrime ** data.privateKey) % data.basePrime
