@@ -27,14 +27,14 @@ N_CONN = 4
 
 @dataclass()
 class Connection:
-    id: int
-    socket: socket.socket
-    basePrime: int
-    modulusPrime: int
-    publicKey: int
-    privateKey: int
-    sharedSecretKey: int
-    desKey: DesKey = None
+    id: int                         # Indenficador deconexão.
+    socket: socket.socket           # Socket para comunicação.
+    basePrime: int = None           # Número primo base para Diffie-Hellman.
+    modulusPrime: int = None        # Número Primo modulo para Diffie-Hellman. 
+    publicKey: int = None           # Chave publica de cliente para conexão.   
+    privateKey: int = None          # Chave privada de cliente para conexão.
+    sharedSecretKey: int = None     # Chave secreta compartilhada Diffie-Hellman.
+    desKey: DesKey = None           # Chave de para criptografar/decriptografar DES.
 
 # Recuperando argumentos de entrada 
 def parsingArguments():
@@ -56,10 +56,6 @@ if __name__ == "__main__":
     # Inicializando objeto de conexão.
     conn = Connection(  randint(0, 1000), 
                         socket.socket(socket.AF_INET, socket.SOCK_STREAM), 
-                        None,
-                        None,
-                        None,
-                        None,
                         None)
 
     # Solicitando iniciação de conexão com servidor SERVER em porta PORT.

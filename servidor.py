@@ -12,22 +12,36 @@ import selectors
 import types
 import argparse
 import socket
+from dataclasses import dataclass
+from des import DesKey
 
 import criptografia as cript
 
+@dataclass()
+class ClientConnection:
+    addr:str                    # Endereço de cliente.
+    inb:bytes = b''             # Dados recebidos.
+    outb:bytes = b''            # Dados enviados.
+    basePrime: int = None       # Número primo base para Diffie-Hellman.
+    modulusPrime: int = None    # Número Primo modulo para Diffie-Hellman. 
+    publicKey: int = None       # Chave publica de servidor para conexão.   
+    privateKey: int = None      # Chave privada de servidor para conexão.
+    sharedSecretKey: int = None # Chave secreta compartilhada Diffie-Hellman.
+    desKey: DesKey = None       # Chave de para criptografar/decriptografar DES.
+
+
 # TAMANHO MÁXIMO DE MENSAGEM.
 MAX_DATA=1024
-# staticChavePrivadaServidor = 15
 
 
 def tratandoRecebimento(data, recv_data):
     # Caso chave de criptografia não tenha sido definida.
-    if(not data.chaveDH):
+    if(not data.sharedSecretKey):
         # Caso não tenha sido definido o 'basePrime' (enviado pelo cliente), menságem atual deverá conte-lo.
         if(not data.basePrime):
             # Vinculando 'basePrime' a estrutura de dados 'dados' de conexão.
             data.basePrime = int.from_bytes(recv_data , "big")
-
+            
             # Definindo 'modulusPrime' e enviando para Cliente desta conexão.
             data.modulusPrime = cript.geraPrimoRandomico(data.basePrime)
             data.outb = bytes([data.modulusPrime])
@@ -36,20 +50,20 @@ def tratandoRecebimento(data, recv_data):
         else:
 
             # Recebendo Chave pública de cliente.
-            chavePublicaCliente = int.from_bytes(recv_data , "big")
+            publicClientKey = int.from_bytes(recv_data , "big")
 
             # DefinincoCave Publica servidor.
             chavePrivadaServidor = cript.geraInteiroRandomico() #Caso tenha que gerar randômico, colocar aqui.
             
             # Calculando chave privada e armazenando chave de criptografia.
-            data.chaveDH = (chavePublicaCliente ** chavePrivadaServidor) % data.basePrime
+            data.sharedSecretKey = (publicClientKey ** chavePrivadaServidor) % data.basePrime
 
             # Gerando Chave DES.
-            data.chaveDES = cript.geraChaveDES(data.chaveDH)
+            data.chaveDES = cript.geraChaveDES(data.sharedSecretKey)
 
             # Calculando e retornando Chave Pública de servidor e retornando para cliente.
-            chavePublicaServidor = (data.modulusPrime ** chavePrivadaServidor) % data.basePrime
-            data.outb = bytes([chavePublicaServidor])
+            data.publicKey = (data.modulusPrime ** chavePrivadaServidor) % data.basePrime
+            data.outb = bytes([data.publicKey])
     else:
         
         # Decriptografando Mensagem
@@ -95,7 +109,7 @@ def atenderConexao(key, mask):
             sent = sock.send(data.outb)
             data.outb = data.outb[sent:]
         
-            print("data.basePrime", data.basePrime, "data.modulusPrime", data.modulusPrime, "data.chaveDH", data.chaveDH)
+            print("data.basePrime", data.basePrime, "data.modulusPrime", data.modulusPrime, "data.sharedSecretKey", data.sharedSecretKey)
 
 def defineNovaConexao(sock):
     
@@ -109,14 +123,7 @@ def defineNovaConexao(sock):
     #Gerador de Primo
 
     # Definindo objeto para manipulação de conexão criada.
-    data = types.SimpleNamespace(
-                                addr=endereco,      # Endereço de cliente.
-                                inb=b'',            # Dados recebidos.
-                                outb=b'',           # Dados enviados.
-                                modulusPrime=None,  # Número primo de cifragem do servidor.
-                                basePrime=None,     # Número Primo se cigragem do cliente. 
-                                chaveDH=None,       # Chave privada DH.
-                                chaveDES=None)      # Chave de para criptografar/decriptografar DES.
+    data = ClientConnection(endereco)
     
     # Definindo eventos para nova conesão (Leitura e Escrita).
     events = selectors.EVENT_READ | selectors.EVENT_WRITE
