@@ -111,7 +111,7 @@ def atenderConexao(key, mask):
         
             print("data.basePrime", data.basePrime, "data.modulusPrime", data.modulusPrime, "data.sharedSecretKey", data.sharedSecretKey)
 
-def defineNovaConexao(sock):
+def defineNovaConexao(sel, sock):
     
     # Definindo socket para nova conexão.
     conn, endereco = sock.accept()
@@ -183,7 +183,7 @@ if __name__ == "__main__":
             # Caso dados estejam vazios, objetos de arquivo selecionado é o de 'listening_sock', 
             # ou seja, nova solicitação para abertura de conexão. 
             if key.data is None:
-                defineNovaConexao(key.fileobj)
+                defineNovaConexao(sel, key.fileobj)
 
             # Caso contrário, objetos de arquivo selecionado é o de conexão já existente.
             else:
