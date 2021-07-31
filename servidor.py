@@ -1,11 +1,11 @@
 #!/usr/bin/env python3.9
 '''
-Programa: Servidor Concorrente TCP/IP usando socket 'SOCK_STREAM' aplicando metodo de cirptografia para troca de chaves Diffie-Hellman.
+Programa: Servidor Concorrente TCP/IP usando socket 'SOCK_STREAM' aplicando metodo de troca de chaves Diffie-Hellma para aplicação de criptografia.
 
-Autores:    Douglas Affonso Clementino.
-            Rafael de Paulo Dias.
-
-Data da última Modificação: 22/07/2021
+Autores:    Douglas Affonso Clementino GRR20175877
+            Rafael de Paulo Dias GRR20176556
+            
+Data da última Modificação: 31/07/2021
 '''
 
 import selectors

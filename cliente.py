@@ -1,12 +1,12 @@
 #!/usr/bin/env python3.9
 
 '''
-Programa: Cliente TCP/IP usando socket 'SOCK_STREAM' aplicando metodo de cirptografia para troca de chaves Diffie-Hellman.
+Programa: Cliente TCP/IP usando socket 'SOCK_STREAM' aplicando metodo de troca de chaves Diffie-Hellma para aplicação de criptografia.
 
-Autores:    Douglas Affonso Clementino.
-            Rafael de Paulo Dias.
+Autores:    Douglas Affonso Clementino GRR20175877
+            Rafael de Paulo Dias GRR20176556
             
-Data da última Modificação: 22/07/2021
+Data da última Modificação: 31/07/2021
 '''
 
 import socket
@@ -22,8 +22,6 @@ import criptografia as cript
 
 # TAMANHO MÁXIMO DE MENSAGEM.
 MAX_DATA=1024
-N_CONN = 4
-
 
 @dataclass()
 class Connection:
@@ -66,31 +64,48 @@ if __name__ == "__main__":
     print("                        Trocando Números Primos                           ")    
     print("==========================================================================")
 
+    # Gerando Valor Primo de base para Diffie-Hellman.
     conn.basePrime = cript.geraPrimoRandomico(None)
+
+    # Enviando pribmo base para servidor.
     conn.socket.sendall(bytes([conn.basePrime]))
 
+    # Recebendo Primo de módulo para  Diffie-Hellman de  servidor.
     data = conn.socket.recv(MAX_DATA)
     conn.modulusPrime = int.from_bytes(data, "big")
 
+    # Imprimindo insância de Connection.
     print('\n'.join("%s: %s" % item for item in vars(conn).items()))
     
 
     print("==========================================================================")
     print("           Definindo Chaves Publicas, Privadas e Diffie–Hellman           ")    
     print("==========================================================================")
+
+    # Gerando Chave Privada Diffie-Hellman.
     conn.privateKey = cript.geraInteiroRandomico()
+
+    # Gerando Chave Pública Diffie-Hellman.
     conn.publicKey = (conn.modulusPrime ** conn.privateKey) % conn.basePrime
 
+    # Enviando Chave Pública a Servidor.
     conn.socket.sendall(bytes([conn.publicKey]))
 
+    # Recebendo Chave Pública de Servidor.
     data = conn.socket.recv(MAX_DATA)
     publicServerKey = int.from_bytes(data, "big")
+
+    # Calculando Chave Secreta Compartilhada.
     conn.sharedSecretKey = (publicServerKey ** conn.privateKey) % conn.basePrime
+
+    # Imprimindo insância de Connection.
     print('\n'.join("%s: %s" % item for item in vars(conn).items()))
 
     print("==========================================================================")
     print("                           Definindo Chaves DES                           ")
     print("==========================================================================")
+    
+    # Gerando Chave de criptografia DES sobre chave secreta compartilhada.
     conn.desKey = cript.geraChaveDES(conn.sharedSecretKey)
     print('\n'.join("%s: %s" % item for item in vars(conn).items()))
 
@@ -104,14 +119,17 @@ if __name__ == "__main__":
 
         print(f'Troca Menságens Cirptografadas Ordem {i}:')
 
+        # Definindo Menságem e criptografando-a.
         mensagem = f"MENSAGEM '{i}', ID: '{conn.id}'."
         mensagem_cript = cript.criptografar(conn.desKey, str.encode(mensagem))
+        # Enviando Menságem
         conn.socket.sendall(mensagem_cript)
 
         print(f'\tEnviando Menságem:')
         print('\t\tMensagem Cripto: ', repr(mensagem_cript))
         print('\t\tMensagem Decripto: ', repr(str.encode(mensagem)))
 
+        # Recebendo Resposta e decriptografando-a.
         data = conn.socket.recv(MAX_DATA)
         real_data = cript.decriptografar(conn.desKey, data) 
         print(f'\tRecebendo Menságem:')
@@ -122,5 +140,6 @@ if __name__ == "__main__":
     print("==========================================================================")
     print("                           Fechando Conexão                               ")
     print("==========================================================================")
+    # Fechando Conexão.
     conn.socket.close()
 

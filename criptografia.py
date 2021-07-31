@@ -1,10 +1,10 @@
 '''
 Programa: Biblioteca Auxiliar de Funções de criptografia utilizada por cliente e servidor TCP/IP.
 
-Autores:    Douglas Affonso Clementino.
-            Rafael de Paulo Dias.
+Autores:    Douglas Affonso Clementino GRR20175877
+            Rafael de Paulo Dias GRR20176556
             
-Data da última Modificação: 22/07/2021
+Data da última Modificação: 31/07/2021
 '''
 
 from des import DesKey
