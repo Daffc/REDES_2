@@ -1,19 +1,47 @@
 ==========================================================================
                              Iniciando Conexões                           
 ==========================================================================
-Connection(id=713, socket=<socket.socket fd=3, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 46354), raddr=('127.0.0.1', 9999)>, basePrime=None, modulusPrime=None, publicKey=None, privateKey=None, sharedSecretKey=None, desKey=None)
+id=713 
+socket: <socket.socket fd=3, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 46354), raddr=('127.0.0.1', 9999)>, 
+basePrime: None 
+modulusPrime: None
+publicKey: None 
+privateKey: None 
+sharedSecretKey: None 
+desKey: None
 ==========================================================================
                         Trocando Números Primos                           
 ==========================================================================
-Connection(id=713, socket=<socket.socket fd=3, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 46354), raddr=('127.0.0.1', 9999)>, basePrime=251, modulusPrime=137, publicKey=None, privateKey=None, sharedSecretKey=None, desKey=None)
+id=713 
+socket: <socket.socket fd=3, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 46354), raddr=('127.0.0.1', 9999)>, 
+basePrime: 251 
+modulusPrime: 137
+publicKey: None 
+privateKey: None 
+sharedSecretKey: None 
+desKey: None
 ==========================================================================
            Definindo Chaves Publicas, Privadas e Diffie–Hellman           
 ==========================================================================
-Connection(id=713, socket=<socket.socket fd=3, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 46354), raddr=('127.0.0.1', 9999)>, basePrime=251, modulusPrime=137, publicKey=15, privateKey=414, sharedSecretKey=63, desKey=None)
+id=713 
+socket: <socket.socket fd=3, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 46354), raddr=('127.0.0.1', 9999)>, 
+basePrime: 251 
+modulusPrime: 137
+publicKey: 15 
+privateKey: 414 
+sharedSecretKey: 63 
+desKey: None
 ==========================================================================
                            Definindo Chaves DES                           
 ==========================================================================
-Connection(id=713, socket=<socket.socket fd=3, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 46354), raddr=('127.0.0.1', 9999)>, basePrime=251, modulusPrime=137, publicKey=15, privateKey=414, sharedSecretKey=63, desKey=<des.base.DesKey object at 0x7ff17450fd90>)
+id=713 
+socket: <socket.socket fd=3, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 46354), raddr=('127.0.0.1', 9999)>, 
+basePrime: 251 
+modulusPrime: 137
+publicKey: 15 
+privateKey: 414 
+sharedSecretKey: 63 
+desKey: <des.base.DesKey object at 0x7ff17450fd90>
 ==========================================================================
                      Trocando Menságens Criptografadas                    
 ==========================================================================
