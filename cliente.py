@@ -13,7 +13,7 @@ import socket
 import argparse
 from random import randint 
 from des import DesKey
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
 from time import sleep
 
 import criptografia as cript
@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     # Solicitando iniciação de conexão com servidor SERVER em porta PORT.
     conn.socket.connect((SERVER, PORT))
-    print(conn)
+    print('\n'.join("%s: %s" % item for item in vars(conn).items()))
     
     print("==========================================================================")
     print("                        Trocando Números Primos                           ")    
@@ -71,7 +71,8 @@ if __name__ == "__main__":
 
     data = conn.socket.recv(MAX_DATA)
     conn.modulusPrime = int.from_bytes(data, "big")
-    print(conn)
+
+    print('\n'.join("%s: %s" % item for item in vars(conn).items()))
     
 
     print("==========================================================================")
@@ -85,13 +86,13 @@ if __name__ == "__main__":
     data = conn.socket.recv(MAX_DATA)
     publicServerKey = int.from_bytes(data, "big")
     conn.sharedSecretKey = (publicServerKey ** conn.privateKey) % conn.basePrime
-    print(conn)
+    print('\n'.join("%s: %s" % item for item in vars(conn).items()))
 
     print("==========================================================================")
     print("                           Definindo Chaves DES                           ")
     print("==========================================================================")
     conn.desKey = cript.geraChaveDES(conn.sharedSecretKey)
-    print(conn)
+    print('\n'.join("%s: %s" % item for item in vars(conn).items()))
 
 
     print("==========================================================================")
