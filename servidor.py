@@ -53,16 +53,16 @@ def tratandoRecebimento(data, recv_data):
             publicClientKey = int.from_bytes(recv_data , "big")
 
             # DefinincoCave Publica servidor.
-            chavePrivadaServidor = cript.geraInteiroRandomico() #Caso tenha que gerar randômico, colocar aqui.
+            data.privateKey = cript.geraInteiroRandomico() #Caso tenha que gerar randômico, colocar aqui.
             
             # Calculando chave privada e armazenando chave de criptografia.
-            data.sharedSecretKey = (publicClientKey ** chavePrivadaServidor) % data.basePrime
+            data.sharedSecretKey = (publicClientKey ** data.privateKey) % data.basePrime
 
             # Gerando Chave DES.
             data.chaveDES = cript.geraChaveDES(data.sharedSecretKey)
 
             # Calculando e retornando Chave Pública de servidor e retornando para cliente.
-            data.publicKey = (data.modulusPrime ** chavePrivadaServidor) % data.basePrime
+            data.publicKey = (data.modulusPrime ** data.privateKey) % data.basePrime
             data.outb = bytes([data.publicKey])
     else:
         
@@ -79,7 +79,7 @@ def tratandoRecebimento(data, recv_data):
 
 
 # Tratando de receber dados para conexões previamente iniciadas.
-def atenderConexao(key, mask):
+def atenderConexao(sel, key, mask):
 
     # Recuperando objeto de arquivo e dados de conexão.
     sock = key.fileobj
@@ -187,4 +187,4 @@ if __name__ == "__main__":
 
             # Caso contrário, objetos de arquivo selecionado é o de conexão já existente.
             else:
-                atenderConexao(key, mask)
+                atenderConexao(sel, key, mask)
