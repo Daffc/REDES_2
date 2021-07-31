@@ -1,0 +1,85 @@
+==========================================================================
+                             Iniciando Conexões                           
+==========================================================================
+id: 644
+socket: <socket.socket fd=3, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 46380), raddr=('127.0.0.1', 9999)>
+basePrime: None
+modulusPrime: None
+publicKey: None
+privateKey: None
+sharedSecretKey: None
+desKey: None
+==========================================================================
+                        Trocando Números Primos                           
+==========================================================================
+id: 644
+socket: <socket.socket fd=3, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 46380), raddr=('127.0.0.1', 9999)>
+basePrime: 251
+modulusPrime: 241
+publicKey: None
+privateKey: None
+sharedSecretKey: None
+desKey: None
+==========================================================================
+           Definindo Chaves Publicas, Privadas e Diffie–Hellman           
+==========================================================================
+id: 644
+socket: <socket.socket fd=3, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 46380), raddr=('127.0.0.1', 9999)>
+basePrime: 251
+modulusPrime: 241
+publicKey: 219
+privateKey: 370
+sharedSecretKey: 219
+desKey: None
+==========================================================================
+                           Definindo Chaves DES                           
+==========================================================================
+id: 644
+socket: <socket.socket fd=3, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 46380), raddr=('127.0.0.1', 9999)>
+basePrime: 251
+modulusPrime: 241
+publicKey: 219
+privateKey: 370
+sharedSecretKey: 219
+desKey: <des.base.DesKey object at 0x7f90971fcc10>
+==========================================================================
+                     Trocando Menságens Criptografadas                    
+==========================================================================
+Troca Menságens Cirptografadas Ordem 0:
+	Enviando Menságem:
+		Mensagem Cripto:  b'\x14\xfa\xc5\x01\x14\xfd\xe2\xb4\xf4^\xf0\xfd\x89\xab\xbf<\\r\xfa\x1dw\xa0\xe8\x91\x00\x18u\r\xc3\xf1\xc0Z'
+		Mensagem Decripto:  b"MENSAGEM '0', ID: '644'."
+	Recebendo Menságem:
+		Respota Cripto:  b'\xf37=x\x03JL!\x80\xdcCU\xec\xaa\x9e\xe5R\xb40\x95^\xd7\xd5\xe3\xf0T\xca\x04\xf4D\xe7\x03\xd1\xc2\xe3\xef\xdd\xb4Z~\x14\xfa\xc5\x01\x14\xfd\xe2\xb4\xf4^\xf0\xfd\x89\xab\xbf<\\r\xfa\x1dw\xa0\xe8\x91@vbA\x11\x97\x9e\xf4'
+		Respota  Decripto:  b'RESPONDENDO (\'127.0.0.1\', 46380) COM (b"MENSAGEM \'0\', ID: \'644\'.")'
+Troca Menságens Cirptografadas Ordem 1:
+	Enviando Menságem:
+		Mensagem Cripto:  b'\x14\xfa\xc5\x01\x14\xfd\xe2\xb4\x81\xf5\xf1\x13\xc4\x05\x07X\\r\xfa\x1dw\xa0\xe8\x91\x00\x18u\r\xc3\xf1\xc0Z'
+		Mensagem Decripto:  b"MENSAGEM '1', ID: '644'."
+	Recebendo Menságem:
+		Respota Cripto:  b'\xf37=x\x03JL!\x80\xdcCU\xec\xaa\x9e\xe5R\xb40\x95^\xd7\xd5\xe3\xf0T\xca\x04\xf4D\xe7\x03\xd1\xc2\xe3\xef\xdd\xb4Z~\x14\xfa\xc5\x01\x14\xfd\xe2\xb4\x81\xf5\xf1\x13\xc4\x05\x07X\\r\xfa\x1dw\xa0\xe8\x91@vbA\x11\x97\x9e\xf4'
+		Respota  Decripto:  b'RESPONDENDO (\'127.0.0.1\', 46380) COM (b"MENSAGEM \'1\', ID: \'644\'.")'
+Troca Menságens Cirptografadas Ordem 2:
+	Enviando Menságem:
+		Mensagem Cripto:  b'\x14\xfa\xc5\x01\x14\xfd\xe2\xb4\x18k\x00\xec<\xaa\xab\xfb\\r\xfa\x1dw\xa0\xe8\x91\x00\x18u\r\xc3\xf1\xc0Z'
+		Mensagem Decripto:  b"MENSAGEM '2', ID: '644'."
+	Recebendo Menságem:
+		Respota Cripto:  b'\xf37=x\x03JL!\x80\xdcCU\xec\xaa\x9e\xe5R\xb40\x95^\xd7\xd5\xe3\xf0T\xca\x04\xf4D\xe7\x03\xd1\xc2\xe3\xef\xdd\xb4Z~\x14\xfa\xc5\x01\x14\xfd\xe2\xb4\x18k\x00\xec<\xaa\xab\xfb\\r\xfa\x1dw\xa0\xe8\x91@vbA\x11\x97\x9e\xf4'
+		Respota  Decripto:  b'RESPONDENDO (\'127.0.0.1\', 46380) COM (b"MENSAGEM \'2\', ID: \'644\'.")'
+Troca Menságens Cirptografadas Ordem 3:
+	Enviando Menságem:
+		Mensagem Cripto:  b"\x14\xfa\xc5\x01\x14\xfd\xe2\xb4xl\x847\x91\xa6'\xda\\r\xfa\x1dw\xa0\xe8\x91\x00\x18u\r\xc3\xf1\xc0Z"
+		Mensagem Decripto:  b"MENSAGEM '3', ID: '644'."
+	Recebendo Menságem:
+		Respota Cripto:  b"\xf37=x\x03JL!\x80\xdcCU\xec\xaa\x9e\xe5R\xb40\x95^\xd7\xd5\xe3\xf0T\xca\x04\xf4D\xe7\x03\xd1\xc2\xe3\xef\xdd\xb4Z~\x14\xfa\xc5\x01\x14\xfd\xe2\xb4xl\x847\x91\xa6'\xda\\r\xfa\x1dw\xa0\xe8\x91@vbA\x11\x97\x9e\xf4"
+		Respota  Decripto:  b'RESPONDENDO (\'127.0.0.1\', 46380) COM (b"MENSAGEM \'3\', ID: \'644\'.")'
+Troca Menságens Cirptografadas Ordem 4:
+	Enviando Menságem:
+		Mensagem Cripto:  b'\x14\xfa\xc5\x01\x14\xfd\xe2\xb4SM\xf0TA=\xfd\x8f\\r\xfa\x1dw\xa0\xe8\x91\x00\x18u\r\xc3\xf1\xc0Z'
+		Mensagem Decripto:  b"MENSAGEM '4', ID: '644'."
+	Recebendo Menságem:
+		Respota Cripto:  b'\xf37=x\x03JL!\x80\xdcCU\xec\xaa\x9e\xe5R\xb40\x95^\xd7\xd5\xe3\xf0T\xca\x04\xf4D\xe7\x03\xd1\xc2\xe3\xef\xdd\xb4Z~\x14\xfa\xc5\x01\x14\xfd\xe2\xb4SM\xf0TA=\xfd\x8f\\r\xfa\x1dw\xa0\xe8\x91@vbA\x11\x97\x9e\xf4'
+		Respota  Decripto:  b'RESPONDENDO (\'127.0.0.1\', 46380) COM (b"MENSAGEM \'4\', ID: \'644\'.")'
+==========================================================================
+                           Fechando Conexão                               
+==========================================================================
