@@ -98,21 +98,24 @@ if __name__ == "__main__":
     print("                     Trocando Menságens Criptografadas                    ")
     print("==========================================================================")
 
-    # ENVIANDO 10 MENSÁGENS POR CONEXÕES RANDÔMICAS.
-    for i in range(10):
+    # ENVIANDO 5 MENSÁGENS POR CONEXÕES RANDÔMICAS.
+    for i in range(5):
+
+        print(f'Troca Menságens Cirptografadas Ordem {i}:')
 
         mensagem = f"MENSAGEM '{i}', ID: '{conn.id}'."
         mensagem_cript = cript.criptografar(conn.desKey, str.encode(mensagem))
         conn.socket.sendall(mensagem_cript)
-        print(f'Enviando Menságem {i}')
-        print('\tMensagem Cripto: ', repr(mensagem_cript))
-        print('\tMensagem Decripto: ', repr(str.encode(mensagem)))
+
+        print(f'\tEnviando Menságem:')
+        print('\t\tMensagem Cripto: ', repr(mensagem_cript))
+        print('\t\tMensagem Decripto: ', repr(str.encode(mensagem)))
 
         data = conn.socket.recv(MAX_DATA)
         real_data = cript.decriptografar(conn.desKey, data) 
-        print(f'Recebendo Menságem {i}')
-        print('\tMensagem Cripto: ', repr(data))
-        print('\tMensagem Decripto: ', repr(real_data))
+        print(f'\tRecebendo Menságem:')
+        print('\t\tRespota Cripto: ', repr(data))
+        print('\t\tRespota  Decripto: ', repr(real_data))
 
 
     print("==========================================================================")

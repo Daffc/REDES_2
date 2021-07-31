@@ -39,43 +39,73 @@ def tratandoRecebimento(data, recv_data):
     if(not data.sharedSecretKey):
         # Caso não tenha sido definido o 'basePrime' (enviado pelo cliente), menságem atual deverá conte-lo.
         if(not data.basePrime):
+
             # Vinculando 'basePrime' a estrutura de dados 'dados' de conexão.
             data.basePrime = int.from_bytes(recv_data , "big")
+            print(f'\tRecebendo BasePrime de Cliente: {data.addr}')
+            print(f'\t\tBasePrime: {data.basePrime}')
+
             
             # Definindo 'modulusPrime' e enviando para Cliente desta conexão.
             data.modulusPrime = cript.geraPrimoRandomico(data.basePrime)
+            print(f'\t\tGerando modulusPrime: {data.modulusPrime}')
             data.outb = bytes([data.modulusPrime])
 
         # Caso bases já estejam definidas, menságem conterá chave pública.
         else:
 
+            print(f'\tRecebendo Chave Publica de Cliente: {data.addr}')
+
             # Recebendo Chave pública de cliente.
             publicClientKey = int.from_bytes(recv_data , "big")
+            print(f'\t\tpublicClientKey: {publicClientKey}')
 
-            # DefinincoCave Publica servidor.
+
+            # DefinincoCave Privada servidor.
             data.privateKey = cript.geraInteiroRandomico() #Caso tenha que gerar randômico, colocar aqui.
             
-            # Calculando chave privada e armazenando chave de criptografia.
+            print(f'\t\tGerando Chave privada (privateKey) servidor: {data.privateKey}')
+            
+            
+            # Calculando chave privada compartilhada e armazenando chave de criptografia.
             data.sharedSecretKey = (publicClientKey ** data.privateKey) % data.basePrime
+            print(f'\t\tDefinindo Chave compartilhada (sharedSecretKey): {data.sharedSecretKey}')
 
             # Gerando Chave DES.
-            data.desKey = cript.geradesKey(data.sharedSecretKey)
+            data.desKey = cript.geraChaveDES(data.sharedSecretKey)
+            print(f'\t\tGerando Chave de criptografia DES (desKey): {data.desKey}')
 
             # Calculando e retornando Chave Pública de servidor e retornando para cliente.
             data.publicKey = (data.modulusPrime ** data.privateKey) % data.basePrime
+            print(f'\t\tGerando Chave Pública (publicKey) de servidor: {data.publicKey}')
             data.outb = bytes([data.publicKey])
+        print(f'\t\t{data}')
+
     else:
+
+        print(f'\tRecebendo Menságem Criptografada de Cliente: {data.addr}')
         
         # Decriptografando Mensagem
-        mensagem = cript.decriptografar(data.desKey, recv_data)
-        
-        # Operações com menságem.
-        print('mensagem', mensagem)
+        mensagem = recv_data
+        mensagem_decript = cript.decriptografar(data.desKey, recv_data)
 
-        resposta = str.encode(f'RESPONDENDO {data.addr} COM ({mensagem})')
+        print('\t\tMensagem Cripto: ', repr(mensagem))
+        print('\t\tMensagem Decripto: ', repr(mensagem_decript))
+
+
+        # Operações com menságem.
+        resposta = f'RESPONDENDO {data.addr} COM ({mensagem_decript})'
+        resposta_encript = cript.criptografar(data.desKey, str.encode(resposta))
+
+        print('\t\tDefinindo Menságem Desposta: ')
+        print('\t\t\tResposta Original: ', repr(resposta))
+        print('\t\t\tResposta Criptografada: ', repr(resposta_encript))
+        
+
 
         # Define Resposta.
-        data.outb += cript.criptografar(data.desKey, resposta)
+        data.outb += resposta_encript
+
 
 
 # Tratando de receber dados para conexões previamente iniciadas.
@@ -103,14 +133,12 @@ def atenderConexao(sel, key, mask):
     # Caso menságem esteja pronta para ser enviada.
     if mask & selectors.EVENT_WRITE:
         if data.outb:
-            print('Enviando: ', repr(data.outb), 'para', data.addr)
+            print('\t\tEnviando: ', repr(data.outb), 'para', data.addr)
 
             # Envia menságem e ajusta ponteiro de buffer.
             sent = sock.send(data.outb)
             data.outb = data.outb[sent:]
         
-            print("data.basePrime", data.basePrime, "data.modulusPrime", data.modulusPrime, "data.sharedSecretKey", data.sharedSecretKey)
-
 def defineNovaConexao(sel, sock):
     
     # Definindo socket para nova conexão.
